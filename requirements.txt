@@ -1,1 +1,6 @@
-numpy
+fastapi
+uvicorn
+jinja2
+typer
+python-multipart
+uuid
