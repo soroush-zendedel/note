@@ -126,3 +126,5 @@ Pipfile.lock
 poetry.lock
 
 build/
+
+notes_db.json
