@@ -11,7 +11,7 @@ def setup_logging():
         format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
         datefmt="%Y-%m-%d %H:%M:%S",
         handlers=[
-            logging.FileHandler("notes.log"), # file
+            logging.FileHandler("note_manager.log"), # file
             logging.StreamHandler() # console
         ]
     )
