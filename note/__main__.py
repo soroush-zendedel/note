@@ -21,7 +21,7 @@ def setup_logging():
         format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
         datefmt="%Y-%m-%d %H:%M:%S",
         handlers=[
-            logging.FileHandler("note_manager.log"), # file
+            logging.FileHandler("notes.log"), # file
             logging.StreamHandler() # console
         ]
     )
@@ -31,7 +31,7 @@ app = typer.Typer(help="Personal Note Manager - A Simple Notebook!")
 
 console = Console()
 
-DB_PATH = Path("notes_db.json")
+DB_PATH = Path("notes.json")
 manager = JsonNoteManager(DB_PATH)
 
 
@@ -204,7 +204,7 @@ def run_web_app(
     console.print(f"Starting web server at [bold green]http://{host}:{port}[/bold green]")
     console.print("Press CTRL+C to stop.")
 
-    web_app = create_app(manager=manager)
+    web_app = create_app()
 
     # Run the server with uvicorn
     uvicorn.run(web_app, host=host, port=port)

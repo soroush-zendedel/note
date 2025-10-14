@@ -4,3 +4,4 @@ jinja2
 typer
 python-multipart
 uuid
+pydantic_settings

@@ -127,4 +127,4 @@ poetry.lock
 
 build/
 
-notes_db.json
+notes.json

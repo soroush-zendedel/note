@@ -6,20 +6,21 @@ from pathlib import Path
 from typing import Dict, List, Optional
 
 from note.exceptions import NoteNotFoundError, NotUniqueIDError
+from note.interfaces import INoteManager
 from note.models import Note
 
 logger = logging.getLogger(__name__)
 
 
 
-class NoteManager:
-    """CRUD operations for Note Model"""
+class InMemoryNoteManager(INoteManager):
+    """CRUD operations for Note Model(in-memory)."""
 
     def __init__(self) -> None:
         """Initializes with a dictionary."""
         self._notes: Dict[uuid.UUID, Note] = {}
         self._load_notes() # loads notes if exists any
-        logger.info("NoteManager initialized.")
+        logger.info(f"{self.__class__.__name__} initialized.")
 
     def _load_notes(self) -> None:
         """Placeholder for loading notes."""
@@ -109,11 +110,11 @@ class NoteManager:
         return matches
 
 
-class JsonNoteManager(NoteManager):
+class JsonNoteManager(InMemoryNoteManager):
     """JSON file storage for NoteManager."""
     def __init__(self, db_path: Path) -> None:
         self._db_path = db_path
-        self._db_path.touch(exist_ok=True) # Check if a file already exists
+        self._db_path.touch(exist_ok=True) # Check if a Json file already exists
         super().__init__() # We SHOULD call the parent for initializing in-memory version first
 
     def _load_notes(self) -> None:
@@ -147,7 +148,7 @@ if __name__ == "__main__":
         format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
         datefmt="%Y-%m-%d %H:%M:%S",
         handlers=[
-            logging.FileHandler("note_manager.log"), # file
+            logging.FileHandler("notes.log"), # file
             logging.StreamHandler() # console
         ]
     )
@@ -155,7 +156,7 @@ if __name__ == "__main__":
     logger = logging.getLogger(__name__)
 
     #manager = NoteManager()
-    manager = JsonNoteManager(Path("notes_db.json"))
+    manager = JsonNoteManager(Path("notes.json"))
 
     note1 = manager.create_note("Shopping", "1. Milk\n2. Bread")
     note2 = manager.create_note("Meeting", "Meeting with team at 04:00PM")
