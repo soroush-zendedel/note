@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Note Manager{% endblock %}</title>
+    <style>
+        /* Shared CSSs for all pages.*/
+        body { font-family: sans-serif; background-color: #f4f4f9; color: #333; margin: 0; padding: 2rem; }
+        .container { max-width: 900px; margin: auto; background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1, h2 { color: #4a4a4a; }
+        .btn { color: white; padding: 0.5rem 1rem; text-decoration: none; border-radius: 5px; border: none; font-size: 0.9rem; cursor: pointer; text-align: center; }
+        .btn-create { background-color: #007bff; }
+        .btn-edit { background-color: #ffc107; }
+        .btn-delete { background-color: #dc3545; }
+        .btn-back { background-color: #6c757d; }
+        .btn-submit { background-color: #28a745; }
+        a { color: #007bff; text-decoration: none; }
+    </style>
+    <!-- بلاکی برای استایل‌های مخصوص هر صفحه -->
+    {% block head_styles %}{% endblock %}
+</head>
+<body>
+    <div class="container">
+        <!-- این بلاک توسط محتوای اصلی هر صفحه پر خواهد شد -->
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>
