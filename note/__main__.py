@@ -2,6 +2,7 @@ import logging
 from pathlib import Path
 
 import typer
+import uvicorn
 from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
@@ -9,6 +10,7 @@ from rich.text import Text
 
 from note.exceptions import NoteNotFoundError, NotUniqueIDError
 from note.services import JsonNoteManager
+from note.web_app import create_app
 
 
 def setup_logging():
@@ -85,7 +87,7 @@ def list_notes() -> None:
         table.add_row(
             f"[bold blue]{note.id!s}[/bold blue]",
             f"[bold purple]{note.title!s}[/bold purple]",
-            f"[bold green]{note.creation_at.strftime('%Y-%m-%d %H:%M')!s}[/bold green]",
+            f"[bold green]{note.created_at.strftime('%Y-%m-%d %H:%M')!s}[/bold green]",
             f"[bold yellow]{note.updated_at.strftime('%Y-%m-%d %H:%M')!s}[/bold yellow]"
         )
     console.print(table)
@@ -127,7 +129,7 @@ def show_note(
 
         content_display = Text()
         content_display.append(f"ID: {note.id}\n", style="cyan")
-        content_display.append(f"Created: {note.creation_at.strftime('%Y-%m-%d %H:%M:%S')}\n", style="dim")
+        content_display.append(f"Created: {note.created_at.strftime('%Y-%m-%d %H:%M:%S')}\n", style="dim")
         content_display.append(f"Updated: {note.updated_at.strftime('%Y-%m-%d %H:%M:%S')}\n", style="dim")
         content_display.append("─" * 40 + "\n", style="dim") # A separator line
         content_display.append(note.content)
@@ -193,6 +195,20 @@ def update_note(
     except ValueError as e:
         console.print(f"Error: {e}", style="bold red")
 
+@app.command(name="web")
+def run_web_app(
+    host: str = typer.Option("127.0.0.1", help="Server Address."),
+    port: int = typer.Option(8000, help="Server Port.")
+) -> None:
+    """Launches the web application."""
+    console.print(f"Starting web server at [bold green]http://{host}:{port}[/bold green]")
+    console.print("Press CTRL+C to stop.")
+
+    web_app = create_app(manager=manager)
+
+    # Run the server with uvicorn
+    uvicorn.run(web_app, host=host, port=port)
 
 if __name__ == "__main__":
+    setup_logging()
     app()
