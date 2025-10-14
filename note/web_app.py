@@ -55,7 +55,7 @@ def create_app() -> FastAPI:
         """Redirects the root URL to /notes."""
         return RedirectResponse(url="/notes")
 
-    @app.get("/notes") # We should not use function as another functions input parameters, but it's ok in fastAPI!
+    @app.get("/notes") # We should not use a function as another functions input parameters, but it's ok in fastAPI!
     async def list_notes(request: Request, manager: INoteManager = Depends(get_manager)):  # noqa: B008
         """Lists all notes."""
         all_notes = manager.list_all_notes()

@@ -145,11 +145,13 @@ ignore = [
   # Ignore some unsecure rules:
   "S301",
   # Ignore relative imports
-  "TID252"
+  "TID252",
+  # Allows us to use assert in pytest
+  "S101"
 ]
 unfixable = [
   # Don't touch unused imports
-  "F401",
+  "F401"
 ]
 
 [tool.ruff.lint.isort]

@@ -32,3 +32,12 @@ class INoteManager(ABC):
     def delete_note(self, note_id: uuid.UUID) -> bool:
         """Deletes a note by its ID."""
         raise NotImplementedError
+
+    @abstractmethod
+    def search_notes(self, query: str) -> List[Note]:
+        """Retrieves notes by searching in title and content."""
+        raise NotImplementedError
+
+    def find_note_by_prefix(self, short_id: str) -> Note:
+        """Retrieves notes by prefix of id."""
+        raise NotImplementedError
