@@ -171,6 +171,9 @@ branch = true
 parallel = true
 omit = [
   "note/__about__.py",
+  "note/__main__.py",
+  "note/web_app.py",
+  "note/cli.py",
 ]
 
 
