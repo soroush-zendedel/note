@@ -37,10 +37,16 @@ manager = JsonNoteManager(DB_PATH)
 
 @app.command()
 def create(
-    title: str = typer.Option(..., "--title", "-t", prompt="Enter note title"),
-    content: str = typer.Option(..., "--content", "-c", prompt="Enter note content")
-) -> None:
+    title: str = typer.Option(..., "--title", "-t", prompt="Enter note title")
+    ) -> None:
     """Create a new note interactively."""
+    console.print("Enter note content. When you are done, save and close the editor.")
+    # Open the default editor for multi-line content
+    content = typer.edit()
+    if content is None:
+        console.print("No content provided. Aborting note creation.")
+        return
+
     try:
         note = manager.create_note(title=title, content=content)
         console.print(f"Note created with ID: [bold green]{note.id}[/bold green]")
@@ -197,8 +203,8 @@ def update_note(
 
 @app.command(name="web")
 def run_web_app(
-    host: str = typer.Option("127.0.0.1", help="Server Address."),
-    port: int = typer.Option(8000, help="Server Port.")
+    host: str = typer.Option("127.0.0.1", "--host", "-h", help="The network address to bind the server to."),
+    port: int = typer.Option(8000, "--port", "-p", help="The port to run the server on."),
 ) -> None:
     """Launches the web application."""
     console.print(f"Starting web server at [bold green]http://{host}:{port}[/bold green]")
